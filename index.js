@@ -8,7 +8,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 8081;
 
-app.get('/',(req, res) => {
+app.get('/', async (req, res) => {
     var table = req.query.table
     var databaseURL = req.query.databaseURL
     var projectId = req.query.projectId
@@ -18,10 +18,10 @@ app.get('/',(req, res) => {
       };
       firebase.initializeApp(firebaseConfig)
       let data;
-    firebase.database().ref(table || "user").on("value", snapshot =>{
-      data = snapshot.val();
+    await firebase.database().ref(table || "user").on("value", snapshot =>{
+        data = snapshot.val();
     })
-    res.json(data)
+     res.json(data)
 })
 
 app.listen(PORT, () => {
